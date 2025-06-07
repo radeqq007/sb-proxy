@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"log"
 	"net/http"
 	"sb-proxy/internal/config"
 	"strconv"
@@ -14,6 +15,7 @@ func NewRouter(cfg *config.Config) *http.Server {
 		WriteTimeout: time.Duration(cfg.Timeout) * time.Millisecond,
 		IdleTimeout:  time.Duration(cfg.Timeout) * time.Millisecond,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			log.Printf("Incoming request: %s %s", r.Method, r.URL)
 
 			// Add headers
 			for key, value := range cfg.Headers.Add {
