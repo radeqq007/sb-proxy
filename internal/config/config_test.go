@@ -17,7 +17,13 @@ func TestLoad(t *testing.T) {
                 "path_prefix": "/static",
                 "target": "http://localhost:8081"
             }
-        ]
+        ],
+				"headers": {
+					"add": {
+						"X-Proxy-By": "sb-proxy"
+					},
+					"remove": ["X-Powered-By"]
+				}
     }`
 
 	tmpFile, err := os.CreateTemp("", "config_test_*.json")
@@ -48,5 +54,13 @@ func TestLoad(t *testing.T) {
 
 	if cfg.Routes[1].PathPrefix != "/static" || cfg.Routes[1].Target != "http://localhost:8081" {
 		t.Errorf("Second route mismatch: %+v", cfg.Routes[1])
+	}
+
+	if len(cfg.Headers.Add) != 1 || cfg.Headers.Add["X-Proxy-By"] != "sb-proxy" {
+		t.Errorf("Expected header 'X-Proxy-By' to be 'sb-proxy', got %q", cfg.Headers.Add["X-Proxy-By"])
+	}
+
+	if len(cfg.Headers.Remove) != 1 || cfg.Headers.Remove[0] != "X-Powered-By" {
+		t.Errorf("Expected header 'X-Powered-By' to be removed, got %q", cfg.Headers.Remove[0])
 	}
 }
