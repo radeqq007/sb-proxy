@@ -4,11 +4,15 @@ import (
 	"net/http"
 	"sb-proxy/internal/config"
 	"strconv"
+	"time"
 )
 
 func NewRouter(cfg *config.Config) *http.Server {
 	server := &http.Server{
-		Addr: ":" + strconv.Itoa(cfg.Port),
+		Addr:         ":" + strconv.Itoa(cfg.Port),
+		ReadTimeout:  time.Duration(cfg.Timeout) * time.Millisecond,
+		WriteTimeout: time.Duration(cfg.Timeout) * time.Millisecond,
+		IdleTimeout:  time.Duration(cfg.Timeout) * time.Millisecond,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 			// Add headers
