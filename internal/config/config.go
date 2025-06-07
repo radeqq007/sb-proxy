@@ -18,12 +18,14 @@ example sb-config.json:
       "path_prefix": "/admin/",
       "target": "http://localhost:4000"
     },
-		"headers": {
-			"add": {
-				"X-Proxy-By": "sb-proxy",
-			},
-			"remove": ["X-Powered-By"]
 	],
+	"headers": {
+		"add": {
+			"X-Proxy-By": "sb-proxy",
+		},
+		"remove": ["X-Powered-By"]
+	},
+	"timeout_ms": 30,
 }
 */
 
@@ -35,6 +37,7 @@ type Route struct {
 type Config struct {
 	Port    int     `json:"port"`
 	Routes  []Route `json:"routes"`
+	Timeout int     `json:"timeout_ms"` // in milliseconds
 	Headers struct {
 		Add    map[string]string `json:"add"`
 		Remove []string          `json:"remove"`
