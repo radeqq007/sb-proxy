@@ -23,7 +23,8 @@ func TestLoad(t *testing.T) {
 						"X-Proxy-By": "sb-proxy"
 					},
 					"remove": ["X-Powered-By"]
-				}
+				},
+				"timeout_ms": 5000
     }`
 
 	tmpFile, err := os.CreateTemp("", "config_test_*.json")
@@ -62,5 +63,9 @@ func TestLoad(t *testing.T) {
 
 	if len(cfg.Headers.Remove) != 1 || cfg.Headers.Remove[0] != "X-Powered-By" {
 		t.Errorf("Expected header 'X-Powered-By' to be removed, got %q", cfg.Headers.Remove[0])
+	}
+
+	if cfg.Timeout != 5000 {
+		t.Errorf("Expected Timeout to be 5000, got %d", cfg.Timeout)
 	}
 }
