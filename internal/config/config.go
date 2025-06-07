@@ -18,6 +18,11 @@ example sb-config.json:
       "path_prefix": "/admin/",
       "target": "http://localhost:4000"
     },
+		"headers": {
+			"add": {
+				"X-Proxy-By": "sb-proxy",
+			},
+			"remove": ["X-Powered-By"]
 	],
 }
 */
@@ -28,8 +33,12 @@ type Route struct {
 }
 
 type Config struct {
-	Port   int     `json:"port"`
-	Routes []Route `json:"routes"`
+	Port    int     `json:"port"`
+	Routes  []Route `json:"routes"`
+	Headers struct {
+		Add    map[string]string `json:"add"`
+		Remove []string          `json:"remove"`
+	} `json:"headers"`
 }
 
 func Load(path string) (*Config, error) {
