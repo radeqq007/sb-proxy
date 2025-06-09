@@ -20,6 +20,7 @@
       "X-Proxy-By": "sb-proxy"
     },
     "remove": ["X-Powered-By"]
-  }
+  },
+  "timeout_ms": 30,
 }
 ```
