@@ -26,6 +26,12 @@ example sb-config.json:
 		"remove": ["X-Powered-By"]
 	},
 	"timeout_ms": 30,
+  "rate_limit": {
+    "enabled": true,
+    "requests_per_minute": 60,
+    "burst": 10,
+    "cleanup_interval_minutes": 5,
+  }
 }
 */
 
@@ -42,6 +48,12 @@ type Config struct {
 		Add    map[string]string `json:"add"`
 		Remove []string          `json:"remove"`
 	} `json:"headers"`
+	RateLimit struct {
+		Enabled           bool `json:enabled`
+		RequestsPerMinute int  `json:requests_per_minute`
+		Burst             int  `json:burst`
+		cleanupInterval   int  `json:cleanup_interval_minutes`
+	} `json: "rate_limit`
 }
 
 func Load(path string) (*Config, error) {
